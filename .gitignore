@@ -1,27 +1,49 @@
-# Entorno virtual
+# =======================
+# Python
+# =======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+
+# =======================
+# Virtual environment
+# =======================
 venv/
+env/
+
+# =======================
+# Environment files
+# =======================
 .env
 dev.env
 
-# Archivos de Python compilados
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Archivos de base de datos locales
+# =======================
+# Databases (local only)
+# =======================
 *.db
 *.sqlite3
 
-# Archivos temporales
+# =======================
+# Logs & temp files
+# =======================
 *.log
+tmp/
 *.tmp
-*.temp
 
-# Configuración del editor/IDE
+# =======================
+# IDE / Editor settings
+# =======================
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# Archivos del sistema
+# =======================
+# OS-specific files
+# =======================
 .DS_Store
 Thumbs.db
