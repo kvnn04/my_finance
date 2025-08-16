@@ -7,9 +7,13 @@ from api.v1.routes.user import router as user_router
 from api.v1.routes.account import router as account_router
 from api.v1.routes.categories import router as category_router
 from api.v1.routes.transaccion import router as transaction_router
+from api.v1.routes.auth import router as auth_router
 from api.v1.routes.boka import router as boka_router
+from db.create_table_db import Base
 
 app = FastAPI(title=settings.PROJECT_NAME, debug=settings.DEBUG)
+
+# Base.metadata.create_all(bind=engine)
 
 # Configuración CORS
 app.add_middleware(
@@ -21,6 +25,7 @@ app.add_middleware(
 )
 
 # Incluir routers por versión y módulo
+app.include_router(auth_router, prefix="/api/v1", tags=["Auth"])
 app.include_router(user_router, prefix="/api/v1/users", tags=["Users"])
 app.include_router(account_router, prefix="/api/v1/accounts", tags=["Accounts"])
 app.include_router(category_router, prefix="/api/v1/categories", tags=["Categories"])
