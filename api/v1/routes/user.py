@@ -9,7 +9,7 @@ from crud import user as crud_user
 router = APIRouter()
 
 # --- Actualizar datos de usuario ---
-@router.put("/user/{id}", response_model=MeOutput)
+@router.put("/{id}", response_model=MeOutput)
 def user_edit_me(
     id: int,
     updated_data: UserUpdateInput,
@@ -34,7 +34,7 @@ def user_edit_me(
     return MeOutput(id=user.id, username=user.username, email=user.email) # type: ignore
 
 # --- Obtener datos del usuario ---
-@router.get("/user/{id}", response_model=MeOutput)
+@router.get("/{id}", response_model=MeOutput)
 def user_get_me(
     id: int,
     current_user: Me = Depends(get_current_user),
@@ -50,7 +50,7 @@ def user_get_me(
     return MeOutput(id=user.id, username=user.username, email=user.email) # type: ignore
 
 # --- Eliminar usuario ---
-@router.delete("/user/{id}")
+@router.delete("/{id}")
 def user_delete_me(
     id: int,
     current_user: Me = Depends(get_current_user),

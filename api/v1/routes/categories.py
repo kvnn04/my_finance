@@ -21,7 +21,7 @@ router = APIRouter()
 #     return {"message": "Endpoint para ver detalles de una categoria"}
 
 # Obtener todas las categorías
-@router.get("/categories", response_model=List[CategoryOut])
+@router.get("/", response_model=List[CategoryOut])
 def categories_get(
     db: Session = Depends(get_db),
     current_user: Me = Depends(get_current_user)
@@ -29,7 +29,7 @@ def categories_get(
     return get_categories(db, current_user.id)
 
 # Crear categoría
-@router.post("/categories", response_model=CategoryOut)
+@router.post("/", response_model=CategoryOut)
 def categories_post(
     category_data: CategoryCreate,
     db: Session = Depends(get_db),
@@ -38,7 +38,7 @@ def categories_post(
     return create_category(db, category_data, current_user.id)
 
 # Ver detalles de categoría
-@router.get("/categories/{id}", response_model=CategoryOut)
+@router.get("/{id}", response_model=CategoryOut)
 def categories_id_get(
     id: int,
     db: Session = Depends(get_db),
@@ -50,7 +50,7 @@ def categories_id_get(
     return category
 
 # Actualizar categoría
-@router.put("/categories/{id}", response_model=CategoryOut)
+@router.put("/{id}", response_model=CategoryOut)
 def categories_id_put(
     id: int,
     category_data: CategoryUpdate,
@@ -63,7 +63,7 @@ def categories_id_put(
     return category
 
 # Eliminar categoría
-@router.delete("/categories/{id}")
+@router.delete("/{id}")
 def categories_id_delete(
     id: int,
     db: Session = Depends(get_db),

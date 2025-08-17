@@ -1,14 +1,17 @@
+from typing import Optional
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from db.models.user import User
 from db.models.category import Category
 from schemas.category import CategoryCreate, CategoryUpdate
 
 # Obtener todas las categorías
-def get_categories(db: Session, user_id: int):
-    return db.query(Category).filter(Category.user_id == user_id).all()
+def get_categories(db: Session, user_id: int) -> list[Category]:
+    stmt = select(Category).where(Category.user_id == user_id)
+    return list(db.execute(stmt).scalars().all())
 
 # Crear categoría
-def create_category(db: Session, category_data: CategoryCreate, user_id: int):
+def create_category(db: Session, category_data: CategoryCreate, user_id: int) -> Category:
     category = Category(
         name=category_data.name,
         description=category_data.description,
@@ -20,31 +23,34 @@ def create_category(db: Session, category_data: CategoryCreate, user_id: int):
     return category
 
 # Obtener categoría por ID
-def get_category_by_id(db: Session, category_id: int, user_id: int):
-    return db.query(Category).filter(
+def get_category_by_id(db: Session, category_id: int, user_id: int) -> Optional[Category]:
+    stmt = select(Category).where(
         Category.id == category_id,
         Category.user_id == user_id
-    ).first()
+    )
+    return db.execute(stmt).scalars().first()
 
 # Actualizar categoría
-def update_category(db: Session, category_id: int, category_data: CategoryUpdate, user_id: int):
+def update_category(db: Session, category_id: int, category_data: CategoryUpdate, user_id: int) -> Optional[Category]:
     category = get_category_by_id(db, category_id, user_id)
     if not category:
         return None
+
     if category_data.name is not None:
-        category.name = category_data.name # type: ignore
+        category.name = category_data.name  # type: ignore
     if category_data.description is not None:
-        category.description = category_data.description # type: ignore
+        category.description = category_data.description  # type: ignore
 
     db.commit()
     db.refresh(category)
     return category
 
 # Eliminar categoría
-def delete_category(db: Session, category_id: int, user_id: int):
+def delete_category(db: Session, category_id: int, user_id: int) -> Optional[Category]:
     category = get_category_by_id(db, category_id, user_id)
     if not category:
         return None
+
     db.delete(category)
     db.commit()
     return category

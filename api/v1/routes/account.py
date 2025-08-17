@@ -9,7 +9,7 @@ from schemas.user import Me
 router = APIRouter()
 
 # Obtener todas las cuentas del usuario
-@router.get("/accounts", response_model=list[AccountOut])
+@router.get("/", response_model=list[AccountOut])
 def accounts_get_all(
     current_user: Me = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -17,7 +17,7 @@ def accounts_get_all(
     return get_accounts_by_user(db, current_user.id)
 
 # Obtener cuenta por id
-@router.get("/accounts/{id}", response_model=AccountOut)
+@router.get("/{id}", response_model=AccountOut)
 def accounts_get(
     id: int,
     current_user: Me = Depends(get_current_user),
@@ -29,7 +29,7 @@ def accounts_get(
     return account
 
 # Crear cuenta
-@router.post("/accounts", response_model=AccountOut)
+@router.post("/", response_model=AccountOut)
 def accounts_post(
     account_data: AccountCreate,
     current_user: Me = Depends(get_current_user),
@@ -38,7 +38,7 @@ def accounts_post(
     return create_account(db, account_data, current_user.id)
 
 # Actualizar cuenta
-@router.put("/accounts/{id}", response_model=AccountOut)
+@router.put("/{id}", response_model=AccountOut)
 def accounts_put(
     id: int,
     account_data: AccountUpdate,
@@ -51,7 +51,7 @@ def accounts_put(
     return account
 
 # Eliminar cuenta
-@router.delete("/accounts/{id}")
+@router.delete("/{id}")
 def accounts_delete(
     id: int,
     current_user: Me = Depends(get_current_user),
