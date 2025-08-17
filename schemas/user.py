@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 # Input del register
@@ -20,12 +21,19 @@ class SignInInput(BaseModel):
 # Output del login
 class SignInOutput(BaseModel):
     message: str
+    access_token: str
+    token_type: str = "bearer"
 
 class Me(BaseModel):
+    id: int
     username: str
-    password: str
+    email:str
     
 class MeOutput(BaseModel):
+    id: int
     username: str
-    password: str
+    email: str
     
+class UserUpdateInput(BaseModel):
+    username: Optional[str]
+    email: Optional[str]

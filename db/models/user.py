@@ -14,4 +14,5 @@ class User(Base):
 
     # Relación 1:N con Account
     accounts = relationship("Account", back_populates="user", cascade="all, delete-orphan")
+    categories = relationship("Category", back_populates="user", cascade="all, delete-orphan")
 

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
 from core.config import settings
 
 # Importar routers (ejemplo)
@@ -10,7 +11,7 @@ from api.v1.routes.transaccion import router as transaction_router
 from api.v1.routes.auth import router as auth_router
 from api.v1.routes.boka import router as boka_router
 from db.create_table_db import Base
-
+from core.session import engine
 app = FastAPI(title=settings.PROJECT_NAME, debug=settings.DEBUG)
 
 # Base.metadata.create_all(bind=engine)
