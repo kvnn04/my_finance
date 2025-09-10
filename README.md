@@ -22,7 +22,8 @@ Este proyecto surge como una combinación entre:
 ## 🛠 Tecnologías
 
 - **FastAPI** – Framework backend rápido y asíncrono.
-- **Pydantic Settings** – Configuración flexible desde archivos `.env`.
+- **Pydantic Settings** – Configuración flexible desde archivos.
 - **SQLAlchemy** – ORM para manejar la base de datos.
 - **SQLite** – Base de datos inicial (fácil de cambiar a PostgreSQL, MySQL u otro).
+- **Redis** – Gestión de rate limits y datos temporales en memoria para mejorar rendimiento.
 - **Python 3.11+**
