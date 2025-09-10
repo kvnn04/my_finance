@@ -29,10 +29,16 @@ class Me(BaseModel):
     username: str
     email:str
     
+class MeOutputUpdate(BaseModel):
+    id: int
+    username: str
+    email: str
+    
 class MeOutput(BaseModel):
     id: int
     username: str
     email: str
+    plan: str
     
 class UserUpdateInput(BaseModel):
     username: Optional[str]

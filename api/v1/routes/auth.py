@@ -110,6 +110,8 @@ from crud.user import (
 from core.auth import create_access_token, decode_access_token
 from core.session import get_db
 from core.auth import verify_password
+from db.models.user import User
+
 router = APIRouter()
 
 
@@ -130,6 +132,22 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     
     return Me(id=user.id, username=user.username, email=user.email)
+# --- Dependencia para obtener el usuario actual desde el token ---
+
+def get_current_user_2(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+    payload = decode_access_token(token)
+    username: Optional[str] = payload.get("sub")
+    if username is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user = get_user_for_me(db=db, username=username)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    return user
 
 
 # --- Registro de usuarios ---
@@ -156,7 +174,7 @@ def sign_in(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depe
         access_token=access_token,
         token_type="bearer"
     )
-# --- Ruta protegida ---
-@router.get("/me", response_model=MeOutput)
-def me(current_user: Me = Depends(get_current_user)):
-    return MeOutput(id=current_user.id, username=current_user.username, email=current_user.email)
+# # --- Ruta protegida ---
+# @router.get("/me", response_model=MeOutput)
+# def me(current_user: Me = Depends(get_current_user)):
+#     return MeOutput(id=current_user.id, username=current_user.username, email=current_user.email)

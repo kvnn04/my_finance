@@ -1,12 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from api.v1.routes.auth import get_current_user
-from crud.account import get_accounts_by_user, get_account_by_id, create_account, update_account, delete_account
+from crud.account import (
+    get_accounts_by_user,
+    get_account_by_id,
+    create_account,
+    update_account,
+    delete_account
+)
 from schemas.account import AccountCreate, AccountUpdate, AccountOut
 from core.dependencies import get_db
 from schemas.user import Me
+from api.v1.dependencies.rate_limit_dependency import rate_limit_dependency
 
-router = APIRouter()
+# --- Router con rate limit aplicado a todas las rutas ---
+router = APIRouter(
+    dependencies=[Depends(rate_limit_dependency)]
+)
 
 # Obtener todas las cuentas del usuario
 @router.get("/", response_model=list[AccountOut])

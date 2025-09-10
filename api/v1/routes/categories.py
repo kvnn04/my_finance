@@ -4,21 +4,21 @@ from sqlalchemy.orm import Session
 
 from api.v1.routes.auth import get_current_user
 from core.dependencies import get_db
-from crud.category import create_category, delete_category, get_categories, get_category_by_id, update_category
+from crud.category import (
+    create_category,
+    delete_category,
+    get_categories,
+    get_category_by_id,
+    update_category
+)
 from schemas.category import CategoryCreate, CategoryOut, CategoryUpdate
 from schemas.user import Me
+from api.v1.dependencies.rate_limit_dependency import rate_limit_dependency
 
-router = APIRouter()
-
-# @router.get("/categories")
-# def categories_get():
-#     return {"message": "Endpoint para obtener todas las categorias"}
-# @router.get("/categories")
-# def categories_post():
-#     return {"message": "Endpoint para crear una categoria"}
-# @router.get("/categories/{id}")
-# def categories_id_get():
-#     return {"message": "Endpoint para ver detalles de una categoria"}
+# --- Router con rate limit aplicado a todas las rutas ---
+router = APIRouter(
+    dependencies=[Depends(rate_limit_dependency)]
+)
 
 # Obtener todas las categorías
 @router.get("/", response_model=List[CategoryOut])
